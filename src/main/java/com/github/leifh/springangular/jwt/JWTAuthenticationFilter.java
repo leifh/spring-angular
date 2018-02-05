@@ -1,16 +1,12 @@
 package com.github.leifh.springangular.jwt;
 
-import com.github.leifh.springangular.ExcludeFromTests;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -20,12 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 
 public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
     public static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
+    public static final String AUTHORITIES_KEY = "authorities";
 
     private String usernameParameter = SPRING_SECURITY_FORM_USERNAME_KEY;
     private String passwordParameter = SPRING_SECURITY_FORM_PASSWORD_KEY;
@@ -91,11 +89,14 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
                     authResult, this.getClass()));
         }
 
+        String authorities = authResult.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.joining());
+
         // build a JWT
         String jwt = Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, jwtSecretKey.getBytes())
                 .setSubject(authResult.getName())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationTime))
+                .claim(AUTHORITIES_KEY, authorities)
                 .compact();
 
         // custom JWT code

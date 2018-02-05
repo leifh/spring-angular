@@ -40,7 +40,7 @@ public class JwtAuthTest {
 
         HashMap<String, String> var = new HashMap<>();
         var.put("username", "user");
-        var.put("password", "password");
+        var.put("password", "password1");
 
 
         String jwt = this.restTemplate.postForObject("http://localhost:" + port + "/auth/login?username={username}&password={password}", null,

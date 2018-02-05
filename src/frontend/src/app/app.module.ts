@@ -14,10 +14,10 @@ import {HttpClientModule} from "@angular/common/http";
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     CoreModule,
     AuthModule,
-    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

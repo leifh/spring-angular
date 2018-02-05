@@ -18,12 +18,21 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav nav">
-        <li class="active">
-          <a href="signin">Signin</a>
+        <ng-template [ngIf]="!authService.isAuthenticated()">
+          <li routerLinkActive="active">
+            <a routerLink="/signin">Signin</a>
+          </li>
+        </ng-template>
+        <ng-template [ngIf]="authService.isAuthenticated()">
+          <li routerLinkActive="active">
+            <a routerLink="/signout">Signout</a>
+          </li>
+        </ng-template>
+        <!--
+        <li routerLinkActive="active">
+          <a routerLink="/signout">Signout</a>
         </li>
-        <li>
-          <a class="" href="#">Signout</a>
-        </li>
+        -->
       </ul>
     </div>
 

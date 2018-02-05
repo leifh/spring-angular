@@ -11,7 +11,10 @@ export class SigninComponent{
 
   }
 
-  onSignin(f: NgForm) {
-    console.log(f);
+  onSignin(form: NgForm) {
+    const username = form.value.username;
+    const password = form.value.password;
+
+    this.authService.signin(username, password);
   }
 }
