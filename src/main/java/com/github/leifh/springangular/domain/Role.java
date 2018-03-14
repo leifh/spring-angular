@@ -10,8 +10,8 @@ import java.util.Objects;
 public class Role implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
     private String role;
 
@@ -29,7 +29,7 @@ public class Role implements Serializable {
         return role;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
